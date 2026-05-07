@@ -1,0 +1,76 @@
+# Symfony default
+.web-server-pid
+build
+phpunit.xml
+public/bundles
+
+# Local config
+.env.local
+.env.local.php
+.env.*.local
+!config/local
+config/local/*
+!config/local/.gitkeep
+compose.override.yaml
+
+# OpenDXP
+var/*
+!var/.gitkeep
+var/admin/*
+!var/admin/custom-logo.image
+!var/classes
+var/classes/DataObject
+
+!var/config
+var/config/admin_system_settings/admin_system_settings.yaml
+var/config/system_settings/system_settings.yaml
+var/config/debug-mode.php
+var/config/maintenance.php
+
+# Project specific recommendations
+var/config/tag-manager.php
+var/config/reports.php
+
+public/var
+public/sitemap*.xml
+
+# Composer
+vendor
+cache
+
+# Pnpm
+.pnpm-store
+
+# Symfony Asset Mapper
+assets/vendor
+
+# Project Setup
+deployer.phar
+install-deploy.php
+supervisord.conf
+supervisord.pid
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

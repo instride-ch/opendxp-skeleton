@@ -1,0 +1,13 @@
+{
+  "ignorePatterns": [
+    "public/build/**",
+    "public/bundles/**",
+    "var/**",
+    "vendor/**",
+    "lib/**",
+    "tests/**"
+  ],
+  "sortTailwindcss": {
+    "stylesheet": "./assets/styles.css"
+  }
+}

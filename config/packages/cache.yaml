@@ -1,0 +1,7 @@
+framework:
+  cache:
+    # This value is used as part of the "namespace" generated for the cache item keys.
+    # Our deployment strategy involves the creation of new target directories (releases),
+    # hence why we set a value for the cache.prefix_seed configuration option in order to use
+    # the same cache namespace between deployments.
+    prefix_seed: "app"

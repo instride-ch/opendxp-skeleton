@@ -1,0 +1,59 @@
+{
+  "name": "instride/opendxp-skeleton",
+  "description": "The OpenDXP skeleton for projects at instride.",
+  "homepage": "https://instride.ch",
+  "type": "project",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "instride AG",
+      "email": "connect@instride.ch",
+      "homepage": "https://instride.ch",
+      "role": "Digital Agency"
+    }
+  ],
+  "config": {
+    "optimize-autoloader": true,
+    "sort-packages": true,
+    "process-timeout": 0,
+    "allow-plugins": {
+      "symfony/runtime": true
+    }
+  },
+  "require": {
+    "php": ">=8.4",
+    "open-dxp/opendxp": "^1.3",
+    "pentatrion/vite-bundle": "^8.2",
+    "symfony/dotenv": "^7.4",
+    "symfony/runtime": "^7.4"
+  },
+  "require-dev": {
+    "roave/security-advisories": "dev-latest"
+  },
+  "autoload": {
+    "psr-4": {
+      "App\\": "src/",
+      "OpenDxp\\Model\\DataObject\\": "var/classes/DataObject"
+    }
+  },
+  "scripts": {
+    "post-create-project-cmd": "OpenDxp\\Composer::postCreateProject",
+    "post-install-cmd": [
+      "OpenDxp\\Composer::postInstall",
+      "@opendxp-scripts"
+    ],
+    "post-update-cmd": [
+      "OpenDxp\\Composer::postUpdate",
+      "@opendxp-scripts"
+    ],
+    "opendxp-scripts": [
+      "OpenDxp\\Composer::clearCache",
+      "OpenDxp\\Composer::installAssets"
+    ]
+  },
+  "extra": {
+    "symfony-assets-install": "relative"
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
+}

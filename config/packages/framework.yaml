@@ -1,0 +1,12 @@
+framework:
+  default_locale: "en"
+  trusted_hosts: "%env(TRUSTED_HOSTS)%"
+
+when@dev:
+  framework:
+    trusted_proxies: "%env(TRUSTED_PROXIES)%"
+    trusted_headers:
+      - "x-forwarded-for"
+      - "x-forwarded-host"
+      - "x-forwarded-proto"
+      - "x-forwarded-port"
