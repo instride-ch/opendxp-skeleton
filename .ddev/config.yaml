@@ -25,9 +25,7 @@ web_environment:
 nodejs_version: "24"
 corepack_enable: true
 upload_dirs:
-  - "node_modules"
   - "var/assets"
-  - "var/cache"
 
 # Hooks
 hooks:
