@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html lang="{{ app.request.locale|replace({'_': '-'}) }}">
 <head>
-    {%- block metadata %}
+    {% block metadata %}
         {%- if opendxp_website_config('name') is not empty %}
             {%- do opendxp_head_title().append(opendxp_website_config('name')) -%}
             {%- do opendxp_head_title().setSeparator(' – ') -%}
         {% endif -%}
 
-        {{ opendxp_head_title() -}}
+        {{ opendxp_head_title() }}
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        {{ opendxp_head_meta() -}}
+        {{- opendxp_head_meta() -}}
         {{ opendxp_head_link() -}}
         {{ include('base/favicons.html.twig') }}
     {%- endblock %}
@@ -20,8 +20,8 @@
     {% endblock -%}
 
     {%- block javascripts %}
-        {{- vite_entry_script_tags('app') -}}
-    {% endblock -%}
+        {{- vite_entry_script_tags('app') }}
+    {% endblock %}
 </head>
 <body>
     {{- include('base/header.html.twig') -}}

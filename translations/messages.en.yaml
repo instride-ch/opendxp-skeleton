@@ -1,0 +1,16 @@
+app:
+  base:
+    header:
+      login: "Log in"
+      open_menu: "Open menu"
+      close_menu: "Close menu"
+    footer:
+      socials:
+        linkedin: "LinkedIn"
+        github: "GitHub"
+      copyright: "&copy; {year} {name} &bullet; All rights reserved."
+  welcome:
+    headline: "The open source platform for digital experiences"
+    tagline: "Seamlessly connect PIM, DAM, Headless CMS & Composable Commerce. API-First. 100% open source."
+    get_started: "Get Started"
+    documentation: "Documentation"
