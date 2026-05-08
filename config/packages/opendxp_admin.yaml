@@ -1,0 +1,9 @@
+# see https://docs.opendxp.io/docs/core-framework/Best_Practice/Security_Concept/#content-security-policy
+# and https://content-security-policy.com/#directive for more information
+opendxp_admin:
+  admin_csp_header:
+    enabled: true
+
+when@prod:
+  opendxp_admin:
+    custom_admin_path_identifier: "opendxp-administrator-login"

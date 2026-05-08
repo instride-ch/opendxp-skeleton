@@ -1,6 +1,10 @@
+imports:
+  - { resource: "local/" }
+  - { resource: "services/*.yaml" }
+
 parameters:
-  secret: qGjXvAncEhZnqxUBdpIHIs27YoqgmUlvJV9IodTLul0=
-  default_database_server_version: mariadb-10.11.13
+  secret: "qGjXvAncEhZnqxUBdpIHIs27YoqgmUlvJV9IodTLul0="
+  default_database_server_version: "mariadb-10.11.13"
 
   mailer_dsn_main: "%env(MAILER_DSN_MAIN)%"
   mailer_dsn_newsletter: "%env(MAILER_DSN_NEWSLETTER)%"
@@ -44,34 +48,17 @@ services:
     # if you need to do this, you can override this setting on individual services
     public: false
 
-  #
-  # CONTROLLERS
-  #
+  # ---------------------------------------------------------
+  # Commands
+  # ---------------------------------------------------------
+  App\Command\:
+    resource: "../src/Command/"
+    tags: ["console.command"]
 
-  # auto-register all controllers as services
+  # ---------------------------------------------------------
+  # Controllers
+  # ---------------------------------------------------------
   App\Controller\:
     resource: "../src/Controller"
     public: true
     tags: ["controller.service_arguments"]
-
-  #
-  # COMMANDS
-  #
-
-  # auto-register all commands as services
-  App\Command\:
-    resource: "../src/Command/*"
-    tags: ["console.command"]
-
-  # Example custom templating helper
-  # App\Templating\Helper\Example:
-  #     # templating helpers need to be public as they
-  #     # are fetched from the container on demand
-  #     public: true
-  #     tags:
-  #         - { name: templating.helper, alias: fooBar }
-
-  # Example event listener for objects
-  # App\EventListener\TestListener:
-  #     tags:
-  #         - { name: kernel.event_listener, event: opendxp.dataobject.preUpdate, method: onObjectPreUpdate }

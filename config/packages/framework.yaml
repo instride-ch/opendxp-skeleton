@@ -2,6 +2,14 @@ framework:
   default_locale: "en"
   trusted_hosts: "%env(TRUSTED_HOSTS)%"
 
+#    WHEN RUNNING OPENDXP AND OTHER APPLICATIONS ON SAME DOMAIN, SET SESSION COOKIE NAME TO PROVIDE COLLISION
+#    session:
+#        name: "OPENDXP_SESSION_ID"
+
+#### USE SESSION HANDLER CONFIGURED IN php.ini
+#    session:
+#        handler_id: null
+
 when@dev:
   framework:
     trusted_proxies: "%env(TRUSTED_PROXIES)%"

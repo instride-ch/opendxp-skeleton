@@ -125,103 +125,6 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     ...<string, DefinitionType|AliasType|PrototypeType|StackType|ArgumentsType|null>
  * }
  * @psalm-type ExtensionType = array<string, mixed>
- * @psalm-type OpendxpAdminConfig = array{
- *     gdpr_data_extractor?: array{
- *         dataObjects?: array{ // Settings for DataObjects DataProvider
- *             classes?: list<array{ // MY_CLASS_NAME: include: true allowDelete: false includedRelations: - manualSegemens - calculatedSegments // Default: []
- *                     include?: bool|Param, // Set if class should be considered in export. // Default: true
- *                     allowDelete?: bool|Param, // Allow delete of objects directly in preview grid. // Default: false
- *                     includedRelations?: list<scalar|Param|null>,
- *                 }>,
- *         },
- *         assets?: array{ // Settings for Assets DataProvider
- *             types?: list<array{ // asset types // Default: []
- *                 }>,
- *         },
- *     },
- *     objects?: array{
- *         notes_events?: array{
- *             types?: list<scalar|Param|null>,
- *         },
- *     },
- *     assets?: array{
- *         notes_events?: array{
- *             types?: list<scalar|Param|null>,
- *         },
- *         hide_edit_image?: bool|Param, // Default: false
- *         disable_tree_preview?: bool|Param, // Default: true
- *     },
- *     documents?: array{
- *         notes_events?: array{
- *             types?: list<scalar|Param|null>,
- *         },
- *         email_search?: list<scalar|Param|null>,
- *     },
- *     notifications?: bool|array{
- *         enabled?: bool|Param, // Default: true
- *         check_new_notification?: bool|array{ // Can be used to enable or disable the check of new notifications (url: /admin/notification/find-last-unread).
- *             enabled?: bool|Param, // Default: true
- *             interval?: int|Param, // Interval in seconds to check new notifications // Default: 30
- *         },
- *     },
- *     user?: array{
- *         default_key_bindings?: list<array{ // Default: []
- *                 key?: scalar|Param|null,
- *                 action?: scalar|Param|null,
- *                 alt?: scalar|Param|null, // Default: false
- *                 ctrl?: scalar|Param|null, // Default: false
- *                 shift?: scalar|Param|null, // Default: false
- *             }>,
- *     },
- *     admin_languages?: list<scalar|Param|null>,
- *     csrf_protection?: array{
- *         excluded_routes?: list<scalar|Param|null>,
- *     },
- *     admin_csp_header?: bool|array{ // Can be used to enable or disable the Content Security Policy headers.
- *         enabled?: bool|Param, // Default: true
- *         exclude_paths?: list<scalar|Param|null>,
- *         additional_urls?: array{
- *             default-src?: list<scalar|Param|null>,
- *             img-src?: list<scalar|Param|null>,
- *             script-src?: list<scalar|Param|null>,
- *             style-src?: list<scalar|Param|null>,
- *             connect-src?: list<scalar|Param|null>,
- *             font-src?: list<scalar|Param|null>,
- *             media-src?: list<scalar|Param|null>,
- *             frame-src?: list<scalar|Param|null>,
- *         },
- *     },
- *     custom_admin_path_identifier?: scalar|Param|null, // Default: null
- *     custom_admin_route_name?: scalar|Param|null, // Default: "my_custom_admin_entry_point"
- *     branding?: array{
- *         login_screen_invert_colors?: bool|Param, // Default: false
- *         color_login_screen?: scalar|Param|null, // Default: null
- *         color_admin_interface?: scalar|Param|null, // Default: null
- *         color_admin_interface_background?: scalar|Param|null, // Default: null
- *         login_screen_custom_image?: scalar|Param|null, // Default: ""
- *     },
- *     session?: array{
- *         attribute_bags?: array<string, array{ // Default: []
- *                 storage_key?: scalar|Param|null, // Default: null
- *             }>,
- *     },
- *     translations?: array{
- *         path?: scalar|Param|null, // Default: null
- *     },
- *     security_firewall?: mixed,
- *     config_location?: array{
- *         admin_system_settings?: array{
- *             write_target?: array{
- *                 type?: "symfony-config"|"settings-store"|"disabled"|Param, // Default: "symfony-config"
- *                 options?: list<mixed>,
- *             },
- *             read_target?: array{
- *                 type?: "symfony-config"|"settings-store"|Param, // Default: null
- *                 options?: list<mixed>,
- *             },
- *         },
- *     },
- * }
  * @psalm-type OpendxpSeoConfig = array{
  *     sitemaps?: array{
  *         generators?: array<string, bool|string|array{ // Default: []
@@ -1904,15 +1807,102 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     intercept_redirects?: bool|Param, // Default: false
  *     excluded_ajax_paths?: scalar|Param|null, // Default: "^/((index|app(_[\\w]+)?)\\.php/)?_wdt"
  * }
- * @psalm-type WebpackEncoreConfig = array{
- *     output_path?: scalar|Param|null, // The path where Encore is building the assets - i.e. Encore.setOutputPath()
- *     crossorigin?: false|"anonymous"|"use-credentials"|Param, // crossorigin value when Encore.enableIntegrityHashes() is used, can be false (default), anonymous or use-credentials // Default: false
- *     preload?: bool|Param, // preload all rendered script and link tags automatically via the http2 Link header. // Default: false
- *     cache?: bool|Param, // Enable caching of the entry point file(s) // Default: false
- *     strict_mode?: bool|Param, // Throw an exception if the entrypoints.json file is missing or an entry is missing from the data // Default: true
- *     builds?: array<string, scalar|Param|null>,
- *     script_attributes?: array<string, scalar|Param|null>,
- *     link_attributes?: array<string, scalar|Param|null>,
+ * @psalm-type OpendxpAdminConfig = array{
+ *     gdpr_data_extractor?: array{
+ *         dataObjects?: array{ // Settings for DataObjects DataProvider
+ *             classes?: list<array{ // MY_CLASS_NAME: include: true allowDelete: false includedRelations: - manualSegemens - calculatedSegments // Default: []
+ *                     include?: bool|Param, // Set if class should be considered in export. // Default: true
+ *                     allowDelete?: bool|Param, // Allow delete of objects directly in preview grid. // Default: false
+ *                     includedRelations?: list<scalar|Param|null>,
+ *                 }>,
+ *         },
+ *         assets?: array{ // Settings for Assets DataProvider
+ *             types?: list<array{ // asset types // Default: []
+ *                 }>,
+ *         },
+ *     },
+ *     objects?: array{
+ *         notes_events?: array{
+ *             types?: list<scalar|Param|null>,
+ *         },
+ *     },
+ *     assets?: array{
+ *         notes_events?: array{
+ *             types?: list<scalar|Param|null>,
+ *         },
+ *         hide_edit_image?: bool|Param, // Default: false
+ *         disable_tree_preview?: bool|Param, // Default: true
+ *     },
+ *     documents?: array{
+ *         notes_events?: array{
+ *             types?: list<scalar|Param|null>,
+ *         },
+ *         email_search?: list<scalar|Param|null>,
+ *     },
+ *     notifications?: bool|array{
+ *         enabled?: bool|Param, // Default: true
+ *         check_new_notification?: bool|array{ // Can be used to enable or disable the check of new notifications (url: /admin/notification/find-last-unread).
+ *             enabled?: bool|Param, // Default: true
+ *             interval?: int|Param, // Interval in seconds to check new notifications // Default: 30
+ *         },
+ *     },
+ *     user?: array{
+ *         default_key_bindings?: list<array{ // Default: []
+ *                 key?: scalar|Param|null,
+ *                 action?: scalar|Param|null,
+ *                 alt?: scalar|Param|null, // Default: false
+ *                 ctrl?: scalar|Param|null, // Default: false
+ *                 shift?: scalar|Param|null, // Default: false
+ *             }>,
+ *     },
+ *     admin_languages?: list<scalar|Param|null>,
+ *     csrf_protection?: array{
+ *         excluded_routes?: list<scalar|Param|null>,
+ *     },
+ *     admin_csp_header?: bool|array{ // Can be used to enable or disable the Content Security Policy headers.
+ *         enabled?: bool|Param, // Default: true
+ *         exclude_paths?: list<scalar|Param|null>,
+ *         additional_urls?: array{
+ *             default-src?: list<scalar|Param|null>,
+ *             img-src?: list<scalar|Param|null>,
+ *             script-src?: list<scalar|Param|null>,
+ *             style-src?: list<scalar|Param|null>,
+ *             connect-src?: list<scalar|Param|null>,
+ *             font-src?: list<scalar|Param|null>,
+ *             media-src?: list<scalar|Param|null>,
+ *             frame-src?: list<scalar|Param|null>,
+ *         },
+ *     },
+ *     custom_admin_path_identifier?: scalar|Param|null, // Default: null
+ *     custom_admin_route_name?: scalar|Param|null, // Default: "my_custom_admin_entry_point"
+ *     branding?: array{
+ *         login_screen_invert_colors?: bool|Param, // Default: false
+ *         color_login_screen?: scalar|Param|null, // Default: null
+ *         color_admin_interface?: scalar|Param|null, // Default: null
+ *         color_admin_interface_background?: scalar|Param|null, // Default: null
+ *         login_screen_custom_image?: scalar|Param|null, // Default: ""
+ *     },
+ *     session?: array{
+ *         attribute_bags?: array<string, array{ // Default: []
+ *                 storage_key?: scalar|Param|null, // Default: null
+ *             }>,
+ *     },
+ *     translations?: array{
+ *         path?: scalar|Param|null, // Default: null
+ *     },
+ *     security_firewall?: mixed,
+ *     config_location?: array{
+ *         admin_system_settings?: array{
+ *             write_target?: array{
+ *                 type?: "symfony-config"|"settings-store"|"disabled"|Param, // Default: "symfony-config"
+ *                 options?: list<mixed>,
+ *             },
+ *             read_target?: array{
+ *                 type?: "symfony-config"|"settings-store"|Param, // Default: null
+ *                 options?: list<mixed>,
+ *             },
+ *         },
+ *     },
  * }
  * @psalm-type PrestaSitemapConfig = array{
  *     generator?: scalar|Param|null, // Default: "presta_sitemap.generator_default"
@@ -1934,6 +1924,16 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         locales?: string|list<scalar|Param|null>,
  *         i18n?: "symfony"|"jms"|Param, // Strategy used to create your i18n routes. // Default: "symfony"
  *     },
+ * }
+ * @psalm-type WebpackEncoreConfig = array{
+ *     output_path?: scalar|Param|null, // The path where Encore is building the assets - i.e. Encore.setOutputPath()
+ *     crossorigin?: false|"anonymous"|"use-credentials"|Param, // crossorigin value when Encore.enableIntegrityHashes() is used, can be false (default), anonymous or use-credentials // Default: false
+ *     preload?: bool|Param, // preload all rendered script and link tags automatically via the http2 Link header. // Default: false
+ *     cache?: bool|Param, // Enable caching of the entry point file(s) // Default: false
+ *     strict_mode?: bool|Param, // Throw an exception if the entrypoints.json file is missing or an entry is missing from the data // Default: true
+ *     builds?: array<string, scalar|Param|null>,
+ *     script_attributes?: array<string, scalar|Param|null>,
+ *     link_attributes?: array<string, scalar|Param|null>,
  * }
  * @psalm-type OpendxpConfig = array{
  *     bundles?: array{ // Define parameters for OpenDxp Bundle Locator
@@ -2560,7 +2560,6 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     imports?: ImportsConfig,
  *     parameters?: ParametersConfig,
  *     services?: ServicesConfig,
- *     opendxp_admin?: OpendxpAdminConfig,
  *     opendxp_seo?: OpendxpSeoConfig,
  *     pentatrion_vite?: PentatrionViteConfig,
  *     framework?: FrameworkConfig,
@@ -2577,14 +2576,14 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     knp_paginator?: KnpPaginatorConfig,
  *     debug?: DebugConfig,
  *     web_profiler?: WebProfilerConfig,
- *     webpack_encore?: WebpackEncoreConfig,
+ *     opendxp_admin?: OpendxpAdminConfig,
  *     presta_sitemap?: PrestaSitemapConfig,
+ *     webpack_encore?: WebpackEncoreConfig,
  *     opendxp?: OpendxpConfig,
  *     "when@dev"?: array{
  *         imports?: ImportsConfig,
  *         parameters?: ParametersConfig,
  *         services?: ServicesConfig,
- *         opendxp_admin?: OpendxpAdminConfig,
  *         opendxp_seo?: OpendxpSeoConfig,
  *         pentatrion_vite?: PentatrionViteConfig,
  *     },
@@ -2592,7 +2591,6 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         imports?: ImportsConfig,
  *         parameters?: ParametersConfig,
  *         services?: ServicesConfig,
- *         opendxp_admin?: OpendxpAdminConfig,
  *         opendxp_seo?: OpendxpSeoConfig,
  *         pentatrion_vite?: PentatrionViteConfig,
  *     },
