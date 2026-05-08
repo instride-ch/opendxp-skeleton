@@ -1,0 +1,11 @@
+opendxp:
+  full_page_cache:
+    enabled: false
+    lifetime: null
+    exclude_cookie: "opendxp_admin_sid"
+    exclude_patterns: ""
+
+when@prod:
+  opendxp:
+    full_page_cache:
+      enabled: true
