@@ -6,6 +6,7 @@ export default defineConfig({
   plugins: [symfony(), tailwindcss()],
   build: {
     manifest: true,
+    assetsInlineLimit: 0,
     rolldownOptions: {
       input: {
         app: "./assets/main.ts",
