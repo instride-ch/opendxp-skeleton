@@ -8,7 +8,7 @@ require 'contrib/crontab.php';
 
 // ─── Rsync ───────────────────────────────────────────────────────────────────
 
-set('rsync_src', __DIR__);
+set('rsync_src', dirname(__DIR__));
 set('rsync', [
     'exclude' => [
         '.git',
@@ -24,8 +24,8 @@ set('rsync', [
     'filter-file'   => false,
     'filter-perdir' => false,
     'include' => [],
-    'filter'  => [],
-    'flags'   => 'rlz',
+    'filter' => [],
+    'flags' => 'rlz',
     'options' => ['delete-after', 'force'],
     'timeout' => 300,
 ]);
@@ -60,9 +60,7 @@ add('migration_paths', ['OpenDxp\\Bundle\\CoreBundle']);
 // ─── Supervisor (Trendhosting) ────────────────────────────────────────────────
 
 set('supervisor:config_path', '/var/www/webroot/supervisor');
-set('supervisor:group', static function () {
-    return sprintf('%s-messenger', get('application'));
-});
+set('supervisor:group', static fn () => sprintf('%s-messenger', get('application')));
 
 // Reads job list from .deploy/cron/{env}.crontab; silently skips when absent
 set('crontab:jobs', static function () {

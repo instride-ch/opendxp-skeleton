@@ -1,0 +1,12 @@
+{
+  "name": "instride/opendxp-skeleton-deploy",
+  "description": "Deployment tooling — not part of the application.",
+  "private": true,
+  "require": {
+    "deployer/deployer": "^8.0.5"
+  },
+  "config": {
+    "optimize-autoloader": true,
+    "sort-packages": true
+  }
+}
