@@ -110,7 +110,7 @@ task('deploy:backup:db', static function () {
     }
 
     $db = get('database');
-    $backupPath = get('previous_release') . '/backups';
+    $backupPath = get('deploy_path') . '/shared/backups';
     $backupFile = $backupPath . '/backup-' . date('YmdHis') . '.sql.gz';
 
     run(sprintf('mkdir -p %s', $backupPath));
