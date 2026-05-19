@@ -129,28 +129,28 @@ task('deploy:backup:db', static function () {
 
 desc('Run Doctrine database migrations');
 task('opendxp:migrate', static function () {
-    run('cd {{release_path}} && {{console_env}} {{bin/php}} {{bin/console}} doctrine:migrations:migrate --no-interaction --allow-no-migration');
+    run('cd {{release_path}} && {{bin/php}} {{bin/console}} doctrine:migrations:migrate --no-interaction --allow-no-migration');
 });
 
 desc('Rebuild OpenDXP class definitions');
 task('opendxp:classes-rebuild', static function () {
-    run('cd {{release_path}} && {{console_env}} {{bin/php}} {{bin/console}} opendxp:deployment:classes-rebuild --create-classes --no-interaction');
+    run('cd {{release_path}} && {{bin/php}} {{bin/console}} opendxp:deployment:classes-rebuild --create-classes --no-interaction');
 });
 
 desc('Install Symfony bundle web assets');
 task('opendxp:assets-install', static function () {
-    run('cd {{release_path}} && {{console_env}} {{bin/php}} {{bin/console}} assets:install --symlink --no-interaction');
+    run('cd {{release_path}} && {{bin/php}} {{bin/console}} assets:install --symlink --no-interaction');
 });
 
 desc('Stop Symfony Messenger workers before cache clear');
 task('opendxp:messenger-stop', static function () {
-    run('cd {{release_path}} && {{console_env}} {{bin/php}} {{bin/console}} messenger:stop-workers');
+    run('cd {{release_path}} && {{bin/php}} {{bin/console}} messenger:stop-workers');
 });
 
 desc('Clear OpenDXP cache and warm up Symfony cache');
 task('opendxp:cache-clear', static function () {
-    run('cd {{release_path}} && {{console_env}} {{bin/php}} {{bin/console}} opendxp:cache:clear');
-    run('cd {{release_path}} && {{console_env}} {{bin/php}} {{bin/console}} cache:warmup --no-interaction');
+    run('cd {{release_path}} && {{bin/php}} {{bin/console}} opendxp:cache:clear');
+    run('cd {{release_path}} && {{bin/php}} {{bin/console}} cache:warmup --no-interaction');
 });
 
 desc('Sync supervisor config and verify worker processes');
