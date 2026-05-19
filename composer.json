@@ -28,6 +28,7 @@
     "symfony/runtime": "^7.4"
   },
   "require-dev": {
+    "deployer/deployer": "^v8.0.5",
     "roave/security-advisories": "dev-latest"
   },
   "autoload": {
