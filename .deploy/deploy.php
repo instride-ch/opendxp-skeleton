@@ -32,7 +32,13 @@ set('rsync', [
 
 // ─── Shared files & directories ──────────────────────────────────────────────
 
-add('shared_files', ['.env.local']);
+add('shared_files', [
+    '.env.local',
+    'config/local/database.yaml',
+    'var/admin/custom-logo.image',
+    'var/config/admin_system_settings/admin_system_settings.yaml',
+    'var/config/system_settings/system_settings.yaml',
+]);
 add('shared_dirs', [
     'public/var',
     'var/config/portal',
@@ -104,7 +110,6 @@ host(getenv('CI_ENVIRONMENT_NAME'))
 desc('Render .env.local from ENV_LOCAL_TEMPLATE variable and upload to shared/.env.local');
 task('deploy:env', static function () {
     $template = getenv('ENV_LOCAL_TEMPLATE');
-
     $content = preg_replace_callback(
         '/\$\{([A-Z0-9_]+)\}/',
         static fn ($m) => getenv($m[1]) !== false ? getenv($m[1]) : '',
