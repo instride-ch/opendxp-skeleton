@@ -78,4 +78,4 @@ jobs:
           TRUSTED_HOSTS: ${{ vars.TRUSTED_HOSTS }}
           # ── Full .env.local template ──────────────────────────────────────────
           ENV_LOCAL_TEMPLATE: ${{ vars.ENV_LOCAL_TEMPLATE }}
-        run: .deploy/vendor/bin/dep deploy -f .deploy/deploy.php -vvv
+        run: .deploy/vendor/bin/dep deploy -f .deploy/deploy.php
