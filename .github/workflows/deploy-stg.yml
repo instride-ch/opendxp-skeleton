@@ -53,15 +53,29 @@ jobs:
       - name: Deploy
         env:
           CI_ENVIRONMENT_NAME: stg
+          # ── SSH / Server ──────────────────────────────────────────────────────
           SSH_HOST: ${{ vars.SSH_HOST }}
-          SSH_USER: ${{ vars.SSH_USER }}
           SSH_PORT: ${{ vars.SSH_PORT }}
+          SSH_USER: ${{ vars.SSH_USER }}
           DEPLOY_PATH: ${{ vars.DEPLOY_PATH }}
           HTTP_USER: ${{ vars.HTTP_USER }}
           PHP_BIN: ${{ vars.PHP_BIN }}
-          DB_HOST: ${{ vars.DB_HOST }}
-          DB_PORT: ${{ vars.DB_PORT }}
-          DB_NAME: ${{ vars.DB_NAME }}
-          DB_USER: ${{ vars.DB_USER }}
-          DB_PASS: ${{ secrets.DB_PASS }}
+          # ── Database ──────────────────────────────────────────────────────────
+          DATABASE_HOST: ${{ vars.DATABASE_HOST }}
+          DATABASE_PORT: ${{ vars.DATABASE_PORT }}
+          DATABASE_NAME: ${{ vars.DATABASE_NAME }}
+          DATABASE_USER: ${{ secrets.DATABASE_USER }}
+          DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+          # ── Application (.env.local values) ───────────────────────────────────
+          APP_ENV: ${{ vars.APP_ENV }}
+          APP_DEBUG: ${{ vars.APP_DEBUG }}
+          OPENDXP_DEV_MODE: ${{ vars.OPENDXP_DEV_MODE }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          REDIS_URL: ${{ secrets.REDIS_URL }}
+          MAILER_DSN_MAIN: ${{ secrets.MAILER_DSN_MAIN }}
+          MAILER_DSN_NEWSLETTER: ${{ secrets.MAILER_DSN_NEWSLETTER }}
+          TRUSTED_PROXIES: ${{ vars.TRUSTED_PROXIES }}
+          TRUSTED_HOSTS: ${{ vars.TRUSTED_HOSTS }}
+          # ── Full .env.local template ──────────────────────────────────────────
+          ENV_LOCAL_TEMPLATE: ${{ vars.ENV_LOCAL_TEMPLATE }}
         run: .deploy/vendor/bin/dep deploy -f .deploy/deploy.php -vvv

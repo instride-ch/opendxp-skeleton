@@ -84,7 +84,7 @@ host(getenv('CI_ENVIRONMENT_NAME'))
         'env' => getenv('CI_ENVIRONMENT_NAME'),
     ])
     ->setSshArguments(['-o StrictHostKeyChecking=no'])
-    ->set('backup', getenv('CI_ENVIRONMENT_NAME') === 'prd' && getenv('DB_BACKUP') !== 'false')
+    ->set('backup', getenv('CI_ENVIRONMENT_NAME') === 'prd' && getenv('DATABASE_BACKUP') !== 'false')
     ->set('hostname', getenv('SSH_HOST'))
     ->set('remote_user', getenv('SSH_USER'))
     ->set('http_user', getenv('HTTP_USER') ?: getenv('SSH_USER'))
@@ -92,14 +92,35 @@ host(getenv('CI_ENVIRONMENT_NAME'))
     ->set('port', (int) (getenv('SSH_PORT') ?: 22))
     ->set('bin/php', getenv('PHP_BIN') ?: 'php')
     ->set('database', [
-        'host' => getenv('DB_HOST'),
-        'port' => (int) (getenv('DB_PORT') ?: 3306),
-        'name' => getenv('DB_NAME'),
-        'user' => getenv('DB_USER'),
-        'password' => getenv('DB_PASS'),
+        'host' => getenv('DATABASE_HOST'),
+        'port' => (int) (getenv('DATABASE_PORT') ?: 3306),
+        'name' => getenv('DATABASE_NAME'),
+        'user' => getenv('DATABASE_USER'),
+        'password' => getenv('DATABASE_PASSWORD'),
     ]);
 
 // ─── Tasks ────────────────────────────────────────────────────────────────────
+
+desc('Render .env.local from ENV_LOCAL_TEMPLATE variable and upload to shared/.env.local');
+task('deploy:env', static function () {
+    $template = getenv('ENV_LOCAL_TEMPLATE');
+
+    $content = preg_replace_callback(
+        '/\$\{([A-Z0-9_]+)\}/',
+        static fn ($m) => getenv($m[1]) !== false ? getenv($m[1]) : '',
+        $template
+    );
+
+    $sharedPath = get('deploy_path') . '/shared';
+    run(sprintf('mkdir -p %s', escapeshellarg($sharedPath)));
+
+    $tmpFile = tempnam(sys_get_temp_dir(), 'env_local_');
+    file_put_contents($tmpFile, $content);
+    upload($tmpFile, $sharedPath . '/.env.local');
+    unlink($tmpFile);
+
+    writeln('<info>.env.local written to shared path.</info>');
+});
 
 desc('Back up database to shared/backups/ (skipped unless env=prd)');
 task('deploy:backup:db', static function () {
@@ -215,6 +236,7 @@ task('deploy', [
     'deploy:release',
     'deploy:writable',
     'rsync',
+    'deploy:env',
     'deploy:shared',
     'deploy:vendors',
     'opendxp:migrate',
