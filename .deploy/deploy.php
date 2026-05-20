@@ -56,6 +56,7 @@ add('writable_dirs', ['var/classes/DataObject']);
 
 // ─── OpenDXP settings ────────────────────────────────────────────────────────
 
+set('application', 'opendxp-skeleton');
 set('web_dir', 'public');
 set('keep_releases', 3);
 set('writable_mode', 'acl');
@@ -63,7 +64,7 @@ set('symfony_env', 'prod');
 
 add('migration_paths', ['OpenDxp\\Bundle\\CoreBundle']);
 
-// ─── Supervisor (Trendhosting) ────────────────────────────────────────────────
+// ─── Supervisor (Trendhosting) ───────────────────────────────────────────────
 
 set('supervisor:config_path', '/var/www/webroot/supervisor');
 set('supervisor:group', static fn () => sprintf('%s-messenger', get('application')));
@@ -83,7 +84,7 @@ set('crontab:jobs', static function () {
     ));
 });
 
-// ─── Host ─────────────────────────────────────────────────────────────────────
+// ─── Host ────────────────────────────────────────────────────────────────────
 
 host(getenv('CI_ENVIRONMENT_NAME'))
     ->setLabels([
@@ -105,7 +106,7 @@ host(getenv('CI_ENVIRONMENT_NAME'))
         'password' => getenv('DATABASE_PASSWORD'),
     ]);
 
-// ─── Tasks ────────────────────────────────────────────────────────────────────
+// ─── Tasks ───────────────────────────────────────────────────────────────────
 
 desc('Render .env.local from ENV_LOCAL_TEMPLATE variable and upload to shared/.env.local');
 task('deploy:env', static function () {
@@ -197,7 +198,7 @@ task('supervisor:sync', static function () {
     run('sudo supervisorctl reread');
     run('sudo supervisorctl update');
 
-    $status = run(sprintf("sudo supervisorctl status '%s-%s:*'", $group, $env));
+    $status = run(sprintf("sudo supervisorctl status '%s-%s:*' || true", $group, $env));
     writeln($status);
 
     if (preg_match('/\b(FATAL|STOPPED|BACKOFF|EXITED)\b/', $status)) {
@@ -232,7 +233,7 @@ task('deploy:nginx:reload', static function () {
     run('nginx -t && sudo service nginx reload');
 });
 
-// ─── Deploy task sequence ─────────────────────────────────────────────────────
+// ─── Deploy task sequence ────────────────────────────────────────────────────
 
 task('deploy', [
     'deploy:info',
