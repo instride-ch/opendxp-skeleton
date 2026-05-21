@@ -138,7 +138,8 @@ task('deploy:backup:db', static function () {
 
     $db = get('database');
     $backupPath = get('deploy_path') . '/shared/backups';
-    $backupFile = $backupPath . '/backup-' . date('YmdHis') . '.sql.gz';
+    $backupTime = new \DateTime('now', new \DateTimeZone('Europe/Zurich'));
+    $backupFile = $backupPath . '/backup-' . $backupTime->format('YmdHis') . '.sql.gz';
 
     run(sprintf('mkdir -p %s', $backupPath));
     run(sprintf(
