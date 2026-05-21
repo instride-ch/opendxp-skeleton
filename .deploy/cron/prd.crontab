@@ -1,1 +1,1 @@
-*/5 * * * * php /var/www/webroot/opendxp-skeleton/current/bin/console opendxp:maintenance
+*/5 * * * * php /var/www/webroot/opendxp/current/bin/console opendxp:maintenance
