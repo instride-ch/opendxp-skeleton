@@ -167,23 +167,6 @@ task('opendxp:install', static function () {
         return;
     }
 
-    $sharedPath = get('deploy_path') . '/shared';
-    $configFiles = [
-        'var/config/system_settings/system_settings.yaml',
-        'var/config/admin_system_settings/admin_system_settings.yaml',
-    ];
-
-    foreach ($configFiles as $configFile) {
-        if (!is_file($configFile)) {
-            continue;
-        }
-
-        $remoteDir = sprintf('%s/%s', $sharedPath, dirname($configFile));
-
-        run(sprintf('mkdir -p %s', escapeshellarg($remoteDir)));
-        upload($configFile, sprintf('%s/%s', $sharedPath, $configFile));
-    }
-
     $db = get('database');
 
     run('{{bin/php}} {{release_path}}/vendor/bin/opendxp-install --no-interaction --no-debug --only-steps=setup_database,mark_migrations_as_done', env: [
