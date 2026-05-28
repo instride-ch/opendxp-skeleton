@@ -66,6 +66,8 @@ jobs:
           DATABASE_NAME: ${{ vars.DATABASE_NAME }}
           DATABASE_USER: ${{ secrets.DATABASE_USER }}
           DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+          OPENDXP_ADMIN_USERNAME: ${{ secrets.OPENDXP_ADMIN_USERNAME }}
+          OPENDXP_ADMIN_PASSWORD: ${{ secrets.OPENDXP_ADMIN_PASSWORD }}
           # ── Application (.env.local values) ───────────────────────────────────
           APP_ENV: ${{ vars.APP_ENV }}
           APP_DEBUG: ${{ vars.APP_DEBUG }}

@@ -60,12 +60,14 @@ jobs:
           DEPLOY_PATH: ${{ vars.DEPLOY_PATH }}
           HTTP_USER: ${{ vars.HTTP_USER }}
           PHP_BIN: ${{ vars.PHP_BIN }}
-          # ── Database ──────────────────────────────────────────────────────────
+          # ── Admin User & Database ─────────────────────────────────────────────
           DATABASE_HOST: ${{ vars.DATABASE_HOST }}
           DATABASE_PORT: ${{ vars.DATABASE_PORT }}
           DATABASE_NAME: ${{ vars.DATABASE_NAME }}
           DATABASE_USER: ${{ secrets.DATABASE_USER }}
           DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+          OPENDXP_ADMIN_USERNAME: ${{ secrets.OPENDXP_ADMIN_USERNAME }}
+          OPENDXP_ADMIN_PASSWORD: ${{ secrets.OPENDXP_ADMIN_PASSWORD }}
           # ── Application (.env.local values) ───────────────────────────────────
           APP_ENV: ${{ vars.APP_ENV }}
           APP_DEBUG: ${{ vars.APP_DEBUG }}
