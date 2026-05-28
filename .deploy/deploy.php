@@ -168,8 +168,25 @@ task('opendxp:install', static function () {
     }
 
     $db = get('database');
+    $installationSteps = [
+        'write_database_config',
+        'setup_database',
+        'mark_migrations_as_done',
+    ];
 
-    run('{{bin/php}} {{release_path}}/vendor/bin/opendxp-install --no-interaction --no-debug --only-steps=setup_database,mark_migrations_as_done', env: [
+    run(sprintf(
+        'MYSQL_PWD=%s mysql -h %s -P %d -u %s -e %s',
+        escapeshellarg($db['password']),
+        escapeshellarg($db['host']),
+        $db['port'],
+        escapeshellarg($db['user']),
+        escapeshellarg(sprintf(
+            'CREATE DATABASE IF NOT EXISTS `%s` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci',
+            $db['name'],
+        )),
+    ));
+
+    run(sprintf('{{bin/php}} {{release_path}}/vendor/bin/opendxp-install --no-interaction --no-debug --only-steps=%s', implode(',', $installationSteps)), env: [
         'OPENDXP_INSTALL_MYSQL_HOST_SOCKET' => $db['host'],
         'OPENDXP_INSTALL_MYSQL_PORT' => $db['port'],
         'OPENDXP_INSTALL_MYSQL_DATABASE' => $db['name'],
@@ -178,8 +195,6 @@ task('opendxp:install', static function () {
         'OPENDXP_INSTALL_ADMIN_USERNAME' => getenv('OPENDXP_ADMIN_USERNAME'),
         'OPENDXP_INSTALL_ADMIN_PASSWORD' => getenv('OPENDXP_ADMIN_PASSWORD'),
     ]);
-
-    run('{{bin/console}} doctrine:migrations:sync-metadata-storage --no-interaction --ignore-maintenance-mode');
 
     run(sprintf('touch %s', escapeshellarg($markerFile)));
 
@@ -307,8 +322,8 @@ task('deploy', [
     'opendxp:install',
     'opendxp:migrate',
     'opendxp:classes-rebuild',
-    'opendxp:assets-install',
     'opendxp:bundles-install',
+    'opendxp:assets-install',
     'opendxp:messenger-stop',
     'opendxp:cache-clear',
     'deploy:symlink',

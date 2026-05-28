@@ -72,7 +72,9 @@ jobs:
           APP_ENV: ${{ vars.APP_ENV }}
           APP_DEBUG: ${{ vars.APP_DEBUG }}
           OPENDXP_DEV_MODE: ${{ vars.OPENDXP_DEV_MODE }}
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          OPENDXP_MONITORING_API_KEY: ${{ secrets.OPENDXP_MONITORING_API_KEY }}
+          OPENDXP_MONITORING_ENDPOINT: ${{ vars.OPENDXP_MONITORING_ENDPOINT }}
+          OPENDXP_MONITORING_ENVIRONMENT: ${{ vars.OPENDXP_MONITORING_ENVIRONMENT }}
           REDIS_URL: ${{ secrets.REDIS_URL }}
           MAILER_DSN_MAIN: ${{ secrets.MAILER_DSN_MAIN }}
           MAILER_DSN_NEWSLETTER: ${{ secrets.MAILER_DSN_NEWSLETTER }}

@@ -75,7 +75,6 @@ Key environment variables:
 | `APP_ENV`          | `dev`                        | Symfony environment (`dev` / `prod`)    |
 | `APP_DEBUG`        | `true`                       | Enable Symfony debug mode               |
 | `OPENDXP_DEV_MODE` | `false`                      | OpenDXP developer toolbar               |
-| `DATABASE_URL`     | injected by DDEV             | Doctrine / MariaDB connection           |
 | `REDIS_URL`        | `redis://localhost`          | Cache and session store                 |
 | `MAILER_DSN_MAIN`  | `smtp://localhost:1025`      | Primary mail transport (Mailpit in dev) |
 

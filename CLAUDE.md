@@ -71,7 +71,6 @@ OpenDXP manages the admin panel, asset storage (`var/assets/`), document/page tr
 
 | Variable           | Purpose                            |
 | ------------------ | ---------------------------------- |
-| `DATABASE_URL`     | Doctrine DB connection             |
 | `REDIS_URL`        | Cache / session store              |
 | `MAILER_DSN`       | Mail transport                     |
 | `APP_ENV`          | Symfony environment (`dev`/`prod`) |
