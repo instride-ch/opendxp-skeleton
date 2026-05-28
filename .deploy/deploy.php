@@ -2,8 +2,6 @@
 
 namespace Deployer;
 
-use function Sabre\Event\Loop\run;
-
 require 'recipe/symfony.php';
 require 'contrib/rsync.php';
 require 'contrib/crontab.php';
