@@ -155,6 +155,35 @@ task('deploy:backup:db', static function () {
     writeln(sprintf('<info>Database backed up to %s</info>', $backupFile));
 });
 
+desc('Install OpenDXP if not already installed (idempotent via shared/.opendxp.installed marker)');
+task('opendxp:install', static function () {
+    $markerFile = get('deploy_path') . '/shared/.opendxp.installed';
+
+    if (test(sprintf('[ -f %s ]', escapeshellarg($markerFile)))) {
+        writeln('<comment>OpenDXP already installed, skipping.</comment>');
+
+        return;
+    }
+
+    $db = get('database');
+
+    run('{{bin/php}} {{release_path}}/vendor/bin/opendxp-install --no-interaction --no-debug --only-steps=setup_database,mark_migrations_as_done', [
+        'env' => [
+            'OPENDXP_INSTALL_MYSQL_HOST_SOCKET' => $db['host'],
+            'OPENDXP_INSTALL_MYSQL_PORT' => (string) $db['port'],
+            'OPENDXP_INSTALL_MYSQL_DATABASE' => $db['name'],
+            'OPENDXP_INSTALL_MYSQL_USERNAME' => $db['user'],
+            'OPENDXP_INSTALL_MYSQL_PASSWORD' => $db['password'],
+        ],
+    ]);
+
+    run('{{bin/console}} doctrine:migrations:sync-metadata-storage --no-interaction --ignore-maintenance-mode');
+
+    run(sprintf('touch %s', escapeshellarg($markerFile)));
+
+    writeln('<info>OpenDXP installed successfully.</info>');
+});
+
 desc('Run Doctrine database migrations');
 task('opendxp:migrate', static function () {
     run('{{bin/console}} doctrine:migrations:migrate --no-interaction --allow-no-migration');
@@ -273,6 +302,7 @@ task('deploy', [
     'deploy:env',
     'deploy:shared',
     'deploy:vendors',
+    'opendxp:install',
     'opendxp:migrate',
     'opendxp:classes-rebuild',
     'opendxp:assets-install',
