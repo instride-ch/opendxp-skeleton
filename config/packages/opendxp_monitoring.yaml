@@ -1,0 +1,5 @@
+opendxp_monitoring:
+  report:
+    api_key: "%env(OPENDXP_MONITORING_API_KEY)%"
+    default_endpoint: "%env(OPENDXP_MONITORING_ENDPOINT)%"
+    instance_environment: "%env(OPENDXP_MONITORING_ENVIRONMENT)%"

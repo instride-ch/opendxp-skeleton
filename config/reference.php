@@ -125,6 +125,92 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     ...<string, DefinitionType|AliasType|PrototypeType|StackType|ArgumentsType|null>
  * }
  * @psalm-type ExtensionType = array<string, mixed>
+ * @psalm-type OpendxpMonitoringConfig = array{
+ *     report?: array{
+ *         api_key?: scalar|Param|null, // API key for health report endpoint.
+ *         default_endpoint?: scalar|Param|null, // Default health report API endpoint to send data to.
+ *         instance_environment?: scalar|Param|null, // The name of the environment in which the application is running in. // Default: "PRD"
+ *     },
+ *     checks?: array{
+ *         app_environment?: array{
+ *             enabled?: bool|Param, // Enables this check globally. // Default: true
+ *             skip?: bool|Param, // Skips this check globally. // Default: false
+ *             environment?: scalar|Param|null, // The environment the application is running in. // Default: "%kernel.environment%"
+ *         },
+ *         disk_usage?: array{
+ *             enabled?: bool|Param, // Enables this check globally. // Default: true
+ *             skip?: bool|Param, // Skips this check globally. // Default: false
+ *             warning_threshold?: int|Param, // The warning threshold for disk usage in percent. // Default: 80
+ *             critical_threshold?: int|Param, // The critical threshold for disk usage in percent. // Default: 90
+ *             path?: scalar|Param|null, // The root directory of the hosting. // Default: "%kernel.project_dir%"
+ *         },
+ *         doctrine_migrations?: array{
+ *             enabled?: bool|Param, // Enables this check globally. // Default: true
+ *             skip?: bool|Param, // Skips this check globally. // Default: false
+ *         },
+ *         hosting_size?: array{
+ *             enabled?: bool|Param, // Enables this check globally. // Default: true
+ *             skip?: bool|Param, // Skips this check globally. // Default: false
+ *             warning_threshold?: int|Param, // The warning threshold for the hosting size in bytes. // Default: 0
+ *             critical_threshold?: int|Param, // The critical threshold for the hosting size in bytes. // Default: 0
+ *             path?: scalar|Param|null, // The root directory of the hosting. // Default: "%kernel.project_dir%"
+ *         },
+ *         database_size?: array{
+ *             enabled?: bool|Param, // Enables this check globally. // Default: true
+ *             skip?: bool|Param, // Skips this check globally. // Default: false
+ *             warning_threshold?: int|Param, // The warning threshold for the database size in bytes. // Default: 0
+ *             critical_threshold?: int|Param, // The critical threshold for the database size in bytes. // Default: 0
+ *         },
+ *         database_table_size?: array{
+ *             enabled?: bool|Param, // Enables this check globally. // Default: true
+ *             skip?: bool|Param, // Skips this check globally. // Default: false
+ *             warning_threshold?: int|Param, // The warning threshold for all database tables size in bytes. // Default: 0
+ *             critical_threshold?: int|Param, // The critical threshold for all database tables size in bytes. // Default: 0
+ *         },
+ *         https_connection?: array{
+ *             enabled?: bool|Param, // Enables this check globally. // Default: true
+ *             skip?: bool|Param, // Skips this check globally. // Default: false
+ *         },
+ *         mysql_version?: array{
+ *             enabled?: bool|Param, // Enables this check globally. // Default: true
+ *             skip?: bool|Param, // Skips this check globally. // Default: false
+ *             version?: scalar|Param|null, // The expected version. // Default: "10.11"
+ *             operator?: scalar|Param|null, // One of: <, lt, <=, le, >, gt, >=, ge, ==, =, eq, !=, <>, ne // Default: ">="
+ *         },
+ *         php_version?: array{
+ *             enabled?: bool|Param, // Enables this check globally. // Default: true
+ *             skip?: bool|Param, // Skips this check globally. // Default: false
+ *             version?: scalar|Param|null, // The expected version. // Default: "8.4"
+ *             operator?: scalar|Param|null, // One of: <, lt, <=, le, >, gt, >=, ge, ==, =, eq, !=, <>, ne // Default: ">="
+ *         },
+ *         opendxp_areabricks?: array{
+ *             enabled?: bool|Param, // Enables this check globally. // Default: true
+ *             skip?: bool|Param, // Skips this check globally. // Default: false
+ *         },
+ *         opendxp_bundles?: array{
+ *             enabled?: bool|Param, // Enables this check globally. // Default: true
+ *             skip?: bool|Param, // Skips this check globally. // Default: false
+ *         },
+ *         opendxp_element_count?: array{
+ *             enabled?: bool|Param, // Enables this check globally. // Default: true
+ *             skip?: bool|Param, // Skips this check globally. // Default: false
+ *             warning_threshold?: int|Param, // The warning threshold for amount of OpenDXP elements. // Default: 135000
+ *             critical_threshold?: int|Param, // The critical threshold for amount of OpenDXP elements. // Default: 150000
+ *         },
+ *         opendxp_maintenance?: array{
+ *             enabled?: bool|Param, // Enables this check globally. // Default: true
+ *             skip?: bool|Param, // Skips this check globally. // Default: false
+ *         },
+ *         opendxp_users?: array{
+ *             enabled?: bool|Param, // Enables this check globally. // Default: true
+ *             skip?: bool|Param, // Skips this check globally. // Default: false
+ *         },
+ *         opendxp_version?: array{
+ *             enabled?: bool|Param, // Enables this check globally. // Default: true
+ *             skip?: bool|Param, // Skips this check globally. // Default: false
+ *         },
+ *     },
+ * }
  * @psalm-type OpendxpSeoConfig = array{
  *     sitemaps?: array{
  *         generators?: array<string, bool|string|array{ // Default: []
@@ -2560,6 +2646,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     imports?: ImportsConfig,
  *     parameters?: ParametersConfig,
  *     services?: ServicesConfig,
+ *     opendxp_monitoring?: OpendxpMonitoringConfig,
  *     opendxp_seo?: OpendxpSeoConfig,
  *     pentatrion_vite?: PentatrionViteConfig,
  *     framework?: FrameworkConfig,
@@ -2584,6 +2671,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         imports?: ImportsConfig,
  *         parameters?: ParametersConfig,
  *         services?: ServicesConfig,
+ *         opendxp_monitoring?: OpendxpMonitoringConfig,
  *         opendxp_seo?: OpendxpSeoConfig,
  *         pentatrion_vite?: PentatrionViteConfig,
  *     },
@@ -2591,6 +2679,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         imports?: ImportsConfig,
  *         parameters?: ParametersConfig,
  *         services?: ServicesConfig,
+ *         opendxp_monitoring?: OpendxpMonitoringConfig,
  *         opendxp_seo?: OpendxpSeoConfig,
  *         pentatrion_vite?: PentatrionViteConfig,
  *     },
