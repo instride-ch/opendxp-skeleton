@@ -14,14 +14,16 @@ set('rsync', [
         '.git',
         '.github',
         '.ddev',
+        '.deploy',
+        '.vite-hooks',
         'node_modules',
         'vendor',
         'var/cache',
         'var/log',
     ],
     'exclude-file' => false,
-    'include-file'  => false,
-    'filter-file'   => false,
+    'include-file' => false,
+    'filter-file' => false,
     'filter-perdir' => false,
     'include' => [],
     'filter' => [],
@@ -163,6 +165,23 @@ task('opendxp:install', static function () {
         writeln('<comment>OpenDXP already installed, skipping.</comment>');
 
         return;
+    }
+
+    $sharedPath = get('deploy_path') . '/shared';
+    $configFiles = [
+        'var/config/system_settings/system_settings.yaml',
+        'var/config/admin_system_settings/admin_system_settings.yaml',
+    ];
+
+    foreach ($configFiles as $configFile) {
+        if (!is_file($configFile)) {
+            continue;
+        }
+
+        $remoteDir = sprintf('%s/%s', $sharedPath, dirname($configFile));
+
+        run(sprintf('mkdir -p %s', escapeshellarg($remoteDir)));
+        upload($configFile, sprintf('%s/%s', $sharedPath, $configFile));
     }
 
     $db = get('database');

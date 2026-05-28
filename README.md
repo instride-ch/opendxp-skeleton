@@ -14,10 +14,10 @@ A project template for building digital experience platforms on top of [OpenDXP]
 
 ## Prerequisites
 
-- [DDEV](https://ddev.readthedocs.io/) ≥ 1.24
+- [DDEV](https://ddev.readthedocs.io/) ≥ 1.25
 - [Docker](https://docs.docker.com/get-docker/)
 - [Composer](https://getcomposer.org/) 2 (use `ddev composer`)
-- [pnpm](https://pnpm.io/) 11.0.6 (use `ddev pnpm`)
+- [pnpm](https://pnpm.io/) 11 (use `ddev pnpm`)
 
 ## Installation
 
@@ -45,7 +45,7 @@ ddev composer install
 ### 4. Install OpenDXP
 
 ```bash
-ddev exec bin/console opendxp:install --mysql-host-socket=db
+ddev php bin/console opendxp:install --mysql-host-socket=db
 ```
 
 Follow the interactive prompts to set up the admin user and initial site configuration.
@@ -100,10 +100,10 @@ ddev pnpm fmt:check  # Check formatting without writing
 **Backend**
 
 ```bash
-ddev exec bin/console cache:clear
-ddev exec bin/console debug:router
-ddev exec bin/console doctrine:migrations:migrate
-ddev exec bin/console debug:container
+ddev php bin/console cache:clear
+ddev php bin/console debug:router
+ddev php bin/console doctrine:migrations:migrate
+ddev php bin/console debug:container
 ```
 
 **DDEV**
@@ -137,10 +137,10 @@ Linting and formatting run automatically as a pre-commit hook (`.vite-hooks/pre-
 ddev pnpm build
 
 # Clear caches
-ddev exec bin/console cache:clear --env=prod
+ddev php bin/console cache:clear --env=prod
 
 # Run migrations
-ddev exec bin/console doctrine:migrations:migrate --no-interaction --env=prod
+ddev php bin/console doctrine:migrations:migrate --no-interaction --env=prod
 ```
 
 Full-page caching is enabled automatically in the `prod` environment (see `config/packages/full_page_cache.yaml`). Redis is used for application-level caching in all environments.
