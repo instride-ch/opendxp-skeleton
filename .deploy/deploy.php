@@ -170,6 +170,33 @@ task('opendxp:assets-install', static function () {
     run('{{bin/console}} assets:install --symlink --no-interaction');
 });
 
+desc('Install enabled but not yet installed OpenDXP bundles');
+task('opendxp:bundles-install', static function () {
+    run('{{bin/console}} cache:clear --no-interaction --ignore-maintenance-mode');
+
+    $output = run('{{bin/console}} opendxp:bundle:list --ignore-maintenance-mode --json --no-debug');
+    $bundles = json_decode($output, true) ?? [];
+
+    $toInstall = array_filter(
+        $bundles,
+        static fn (array $b) => $b['Enabled'] === true && $b['Installed'] === false && $b['Installable'] === true,
+    );
+
+    if (empty($toInstall)) {
+        writeln('<comment>No bundles to install.</comment>');
+
+        return;
+    }
+
+    foreach ($toInstall as $bundle) {
+        writeln(sprintf('<info>Installing bundle: %s</info>', $bundle['Bundle']));
+        run(sprintf(
+            '{{bin/console}} opendxp:bundle:install %s --ignore-maintenance-mode --no-interaction --no-post-change-commands',
+            escapeshellarg($bundle['Bundle']),
+        ));
+    }
+});
+
 desc('Stop Symfony Messenger workers before cache clear');
 task('opendxp:messenger-stop', static function () {
     run('{{bin/console}} messenger:stop-workers');
@@ -249,6 +276,7 @@ task('deploy', [
     'opendxp:migrate',
     'opendxp:classes-rebuild',
     'opendxp:assets-install',
+    'opendxp:bundles-install',
     'opendxp:messenger-stop',
     'opendxp:cache-clear',
     'deploy:symlink',
