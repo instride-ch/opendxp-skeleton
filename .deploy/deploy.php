@@ -167,14 +167,12 @@ task('opendxp:install', static function () {
 
     $db = get('database');
 
-    run('{{bin/php}} {{release_path}}/vendor/bin/opendxp-install --no-interaction --no-debug --only-steps=setup_database,mark_migrations_as_done', [
-        'env' => [
-            'OPENDXP_INSTALL_MYSQL_HOST_SOCKET' => $db['host'],
-            'OPENDXP_INSTALL_MYSQL_PORT' => (string) $db['port'],
-            'OPENDXP_INSTALL_MYSQL_DATABASE' => $db['name'],
-            'OPENDXP_INSTALL_MYSQL_USERNAME' => $db['user'],
-            'OPENDXP_INSTALL_MYSQL_PASSWORD' => $db['password'],
-        ],
+    run('{{bin/php}} {{release_path}}/vendor/bin/opendxp-install --no-interaction --no-debug --only-steps=setup_database,mark_migrations_as_done', env: [
+        'OPENDXP_INSTALL_MYSQL_HOST_SOCKET' => $db['host'],
+        'OPENDXP_INSTALL_MYSQL_PORT' => (string) $db['port'],
+        'OPENDXP_INSTALL_MYSQL_DATABASE' => $db['name'],
+        'OPENDXP_INSTALL_MYSQL_USERNAME' => $db['user'],
+        'OPENDXP_INSTALL_MYSQL_PASSWORD' => $db['password'],
     ]);
 
     run('{{bin/console}} doctrine:migrations:sync-metadata-storage --no-interaction --ignore-maintenance-mode');
