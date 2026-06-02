@@ -168,10 +168,20 @@ task('opendxp:install', static function () {
     }
 
     $db = get('database');
+
+    // clear_cache is required, so the installer boots App\Kernel before setup_database runs.
+    // Without it, Authentication::getPasswordHash() (called during admin-user creation) tries to
+    // read opendxp.config from the InstallerKernel's container, which doesn't define that parameter.
+    //
+    // mark_migrations_as_done is intentionally omitted here: the installer spawns isolated
+    // bin/console sub-processes that fail with "Access denied" on Trendhosting because MySQL
+    // evaluates grants against the web-server's internal IP instead of the socket/localhost path.
+    // We run those two doctrine commands directly via Deployer below, which uses the correct
+    // SSH environment (with .env.local loaded) and avoids the sub-process isolation issue.
     $installationSteps = [
         'write_database_config',
+        'clear_cache',
         'setup_database',
-        'mark_migrations_as_done',
     ];
 
     run(sprintf(
@@ -195,6 +205,12 @@ task('opendxp:install', static function () {
         'OPENDXP_INSTALL_ADMIN_USERNAME' => getenv('OPENDXP_ADMIN_USERNAME'),
         'OPENDXP_INSTALL_ADMIN_PASSWORD' => getenv('OPENDXP_ADMIN_PASSWORD'),
     ]);
+
+    // Mark all initial migrations as executed so that opendxp:migrate finds nothing to run.
+    // setup_database already created the full schema; running the migrations on top would fail
+    // with "table already exists" errors.
+    run('{{bin/console}} doctrine:migrations:sync-metadata-storage -q');
+    run("{{bin/console}} doctrine:migrations:version --all --add --prefix='OpenDxp\\Bundle\\CoreBundle' -n");
 
     run(sprintf('touch %s', escapeshellarg($markerFile)));
 
