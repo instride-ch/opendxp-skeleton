@@ -3,7 +3,7 @@
   "description": "The OpenDXP skeleton for projects at instride.",
   "homepage": "https://instride.ch",
   "type": "project",
-  "license": "proprietary",
+  "license": "GPL-3.0-or-later",
   "authors": [
     {
       "name": "instride AG",
