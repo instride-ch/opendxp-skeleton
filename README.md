@@ -45,7 +45,7 @@ ddev composer install
 ### 4. Install OpenDXP
 
 ```bash
-ddev php bin/console opendxp:install --mysql-host-socket=db
+ddev php bin/console ddev php vendor/bin/opendxp-install --mysql-host-socket=db
 ```
 
 Follow the interactive prompts to set up the admin user and initial site configuration.
