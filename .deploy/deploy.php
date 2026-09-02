@@ -197,6 +197,7 @@ task('opendxp:install', static function () {
     ));
 
     run(sprintf('{{bin/php}} {{release_path}}/vendor/bin/opendxp-install --no-interaction --no-debug --only-steps=%s', implode(',', $installationSteps)), env: [
+        'APP_ENV' => get('symfony_env'),
         'OPENDXP_INSTALL_MYSQL_HOST_SOCKET' => $db['host'],
         'OPENDXP_INSTALL_MYSQL_PORT' => $db['port'],
         'OPENDXP_INSTALL_MYSQL_DATABASE' => $db['name'],
