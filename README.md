@@ -76,6 +76,7 @@ Key environment variables:
 | `APP_DEBUG`        | `true`                       | Enable Symfony debug mode               |
 | `OPENDXP_DEV_MODE` | `false`                      | OpenDXP developer toolbar               |
 | `REDIS_URL`        | `redis://localhost`          | Cache and session store                 |
+| `OPENSEARCH_HOST`  | `http://localhost:9200`      | Full-text search (optional)             |
 | `MAILER_DSN_MAIN`  | `smtp://localhost:1025`      | Primary mail transport (Mailpit in dev) |
 
 For local overrides create `.env.local` (git-ignored):
