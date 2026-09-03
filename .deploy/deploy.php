@@ -144,8 +144,9 @@ task('deploy:backup:db', static function () {
     $backupFile = $backupPath . '/backup-' . $backupTime->format('YmdHis') . '.sql.gz';
 
     run(sprintf('mkdir -p %s', $backupPath));
+    // pipefail: otherwise a failed mysqldump still exits 0 and leaves a truncated backup
     run(sprintf(
-        'MYSQL_PWD=%s mysqldump -h %s -P %d -u %s %s | gzip > %s',
+        'set -o pipefail && MYSQL_PWD=%s mysqldump -h %s -P %d -u %s %s | gzip > %s',
         escapeshellarg($db['password']),
         escapeshellarg($db['host']),
         $db['port'],
