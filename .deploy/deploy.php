@@ -325,6 +325,13 @@ task('deploy:nginx:reload', static function () {
     run('nginx -t && sudo service nginx reload');
 });
 
+// current is a symlink and PHP resolves it through the realpath cache, so without this the
+// workers keep serving the previous release while the deploy reports success.
+desc('Reload php-fpm so the workers pick up the new release');
+task('deploy:php-fpm:reload', static function () {
+    run('sudo service php-fpm reload');
+});
+
 // ─── Deploy task sequence ────────────────────────────────────────────────────
 
 task('deploy', [
@@ -345,6 +352,7 @@ task('deploy', [
     'opendxp:messenger-stop',
     'opendxp:cache-clear',
     'deploy:symlink',
+    'deploy:php-fpm:reload',
     'crontab:sync',
     'supervisor:sync',
     'deploy:nginx:config',
