@@ -130,6 +130,37 @@ task('deploy:env', static function () {
     writeln('<info>.env.local written to shared path.</info>');
 });
 
+desc('Seed system settings from *_TEMPLATE variables into shared/ (skipped when the file already has content)');
+task('deploy:config:seed', static function () {
+    $sharedPath = get('deploy_path') . '/shared';
+    $configFiles = [
+        'SYSTEM_SETTINGS_TEMPLATE' => 'var/config/system_settings/system_settings.yaml',
+        'ADMIN_SYSTEM_SETTINGS_TEMPLATE' => 'var/config/admin_system_settings/admin_system_settings.yaml',
+    ];
+
+    foreach ($configFiles as $variable => $configFile) {
+        $content = getenv($variable);
+        if ($content === false || $content === '') {
+            continue;
+        }
+
+        $target = sprintf('%s/%s', $sharedPath, $configFile);
+        if (test(sprintf('[ -s %s ]', escapeshellarg($target)))) {
+            writeln(sprintf('<comment>%s exists, keeping it.</comment>', $configFile));
+            continue;
+        }
+
+        run(sprintf('mkdir -p %s', escapeshellarg(dirname($target))));
+
+        $tmpFile = tempnam(sys_get_temp_dir(), 'config_seed_');
+        file_put_contents($tmpFile, $content);
+        upload($tmpFile, $target);
+        unlink($tmpFile);
+
+        writeln(sprintf('<info>%s written to shared path.</info>', $configFile));
+    }
+});
+
 desc('Back up database to shared/backups/ (skipped unless env=prd)');
 task('deploy:backup:db', static function () {
     if (!get('backup')) {
@@ -342,6 +373,7 @@ task('deploy', [
     'deploy:writable',
     'rsync',
     'deploy:env',
+    'deploy:config:seed',
     'deploy:shared',
     'deploy:vendors',
     'opendxp:install',
