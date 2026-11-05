@@ -177,7 +177,11 @@ task('deploy:backup:db', static function () {
     run(sprintf('mkdir -p %s', $backupPath));
     // pipefail: otherwise a failed mysqldump still exits 0 and leaves a truncated backup
     run(sprintf(
-        'set -o pipefail && MYSQL_PWD=%s mysqldump -h %s -P %d -u %s %s | gzip > %s',
+        'set -o pipefail && export MYSQL_PWD=%1$s && { '
+        . 'mysqldump -h %2$s -P %3$d -u %4$s --single-transaction --no-data %5$s && '
+        . 'mysqldump -h %2$s -P %3$d -u %4$s --single-transaction --quick --no-create-info '
+        . '--ignore-table=%5$s.messenger_messages --ignore-table=%5$s.application_logs %5$s; '
+        . '} | gzip > %6$s',
         escapeshellarg($db['password']),
         escapeshellarg($db['host']),
         $db['port'],
