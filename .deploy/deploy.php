@@ -292,7 +292,7 @@ task('opendxp:bundles-install', static function () {
     }
 });
 
-desc('Stop Symfony Messenger workers before cache clear');
+desc('Stop Symfony Messenger workers');
 task('opendxp:messenger-stop', static function () {
     run('{{bin/console}} messenger:stop-workers');
 });
@@ -381,9 +381,9 @@ task('deploy', [
     'opendxp:migrate',
     'opendxp:bundles-install',
     'opendxp:assets-install',
-    'opendxp:messenger-stop',
     'opendxp:cache-clear',
     'deploy:symlink',
+    'opendxp:messenger-stop',
     'deploy:php-fpm:reload',
     'crontab:sync',
     'supervisor:sync',
