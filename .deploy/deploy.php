@@ -130,6 +130,37 @@ task('deploy:env', static function () {
     writeln('<info>.env.local written to shared path.</info>');
 });
 
+desc('Seed system settings from *_TEMPLATE variables into shared/ (skipped when the file already has content)');
+task('deploy:config:seed', static function () {
+    $sharedPath = get('deploy_path') . '/shared';
+    $configFiles = [
+        'SYSTEM_SETTINGS_TEMPLATE' => 'var/config/system_settings/system_settings.yaml',
+        'ADMIN_SYSTEM_SETTINGS_TEMPLATE' => 'var/config/admin_system_settings/admin_system_settings.yaml',
+    ];
+
+    foreach ($configFiles as $variable => $configFile) {
+        $content = getenv($variable);
+        if ($content === false || $content === '') {
+            continue;
+        }
+
+        $target = sprintf('%s/%s', $sharedPath, $configFile);
+        if (test(sprintf('[ -s %s ]', escapeshellarg($target)))) {
+            writeln(sprintf('<comment>%s exists, keeping it.</comment>', $configFile));
+            continue;
+        }
+
+        run(sprintf('mkdir -p %s', escapeshellarg(dirname($target))));
+
+        $tmpFile = tempnam(sys_get_temp_dir(), 'config_seed_');
+        file_put_contents($tmpFile, $content);
+        upload($tmpFile, $target);
+        unlink($tmpFile);
+
+        writeln(sprintf('<info>%s written to shared path.</info>', $configFile));
+    }
+});
+
 desc('Back up database to shared/backups/ (skipped unless env=prd)');
 task('deploy:backup:db', static function () {
     if (!get('backup')) {
@@ -144,8 +175,13 @@ task('deploy:backup:db', static function () {
     $backupFile = $backupPath . '/backup-' . $backupTime->format('YmdHis') . '.sql.gz';
 
     run(sprintf('mkdir -p %s', $backupPath));
+    // pipefail: otherwise a failed mysqldump still exits 0 and leaves a truncated backup
     run(sprintf(
-        'MYSQL_PWD=%s mysqldump -h %s -P %d -u %s %s | gzip > %s',
+        'set -o pipefail && export MYSQL_PWD=%1$s && { '
+        . 'mysqldump -h %2$s -P %3$d -u %4$s --single-transaction --no-data %5$s && '
+        . 'mysqldump -h %2$s -P %3$d -u %4$s --single-transaction --quick --no-create-info '
+        . '--ignore-table=%5$s.messenger_messages --ignore-table=%5$s.application_logs %5$s; '
+        . '} | gzip > %6$s',
         escapeshellarg($db['password']),
         escapeshellarg($db['host']),
         $db['port'],
@@ -225,7 +261,7 @@ task('opendxp:migrate', static function () {
 
 desc('Rebuild OpenDXP class definitions');
 task('opendxp:classes-rebuild', static function () {
-    run('{{bin/console}} opendxp:deployment:classes-rebuild --create-classes --no-interaction');
+    run('{{bin/console}} opendxp:deployment:classes-rebuild --create-classes --force --no-interaction');
 });
 
 desc('Install Symfony bundle web assets');
@@ -260,7 +296,7 @@ task('opendxp:bundles-install', static function () {
     }
 });
 
-desc('Stop Symfony Messenger workers before cache clear');
+desc('Stop Symfony Messenger workers');
 task('opendxp:messenger-stop', static function () {
     run('{{bin/console}} messenger:stop-workers');
 });
@@ -324,6 +360,13 @@ task('deploy:nginx:reload', static function () {
     run('nginx -t && sudo service nginx reload');
 });
 
+// current is a symlink and PHP resolves it through the realpath cache, so without this the
+// workers keep serving the previous release while the deploy reports success.
+desc('Reload php-fpm so the workers pick up the new release');
+task('deploy:php-fpm:reload', static function () {
+    run('sudo service php-fpm reload');
+});
+
 // ─── Deploy task sequence ────────────────────────────────────────────────────
 
 task('deploy', [
@@ -334,16 +377,18 @@ task('deploy', [
     'deploy:writable',
     'rsync',
     'deploy:env',
+    'deploy:config:seed',
     'deploy:shared',
     'deploy:vendors',
     'opendxp:install',
-    'opendxp:migrate',
     'opendxp:classes-rebuild',
+    'opendxp:migrate',
     'opendxp:bundles-install',
     'opendxp:assets-install',
-    'opendxp:messenger-stop',
     'opendxp:cache-clear',
     'deploy:symlink',
+    'opendxp:messenger-stop',
+    'deploy:php-fpm:reload',
     'crontab:sync',
     'supervisor:sync',
     'deploy:nginx:config',

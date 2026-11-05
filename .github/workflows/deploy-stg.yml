@@ -76,10 +76,13 @@ jobs:
           OPENDXP_MONITORING_ENDPOINT: ${{ vars.OPENDXP_MONITORING_ENDPOINT }}
           OPENDXP_MONITORING_ENVIRONMENT: ${{ vars.OPENDXP_MONITORING_ENVIRONMENT }}
           REDIS_URL: ${{ secrets.REDIS_URL }}
+          OPENSEARCH_HOST: ${{ vars.OPENSEARCH_HOST }}
           MAILER_DSN_MAIN: ${{ secrets.MAILER_DSN_MAIN }}
           MAILER_DSN_NEWSLETTER: ${{ secrets.MAILER_DSN_NEWSLETTER }}
           TRUSTED_PROXIES: ${{ vars.TRUSTED_PROXIES }}
           TRUSTED_HOSTS: ${{ vars.TRUSTED_HOSTS }}
           # ── Full .env.local template ──────────────────────────────────────────
           ENV_LOCAL_TEMPLATE: ${{ vars.ENV_LOCAL_TEMPLATE }}
+          SYSTEM_SETTINGS_TEMPLATE: ${{ vars.SYSTEM_SETTINGS_TEMPLATE }}
+          ADMIN_SYSTEM_SETTINGS_TEMPLATE: ${{ vars.ADMIN_SYSTEM_SETTINGS_TEMPLATE }}
         run: .deploy/vendor/bin/dep deploy -f .deploy/deploy.php
