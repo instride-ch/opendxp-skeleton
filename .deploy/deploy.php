@@ -257,7 +257,7 @@ task('opendxp:migrate', static function () {
 
 desc('Rebuild OpenDXP class definitions');
 task('opendxp:classes-rebuild', static function () {
-    run('{{bin/console}} opendxp:deployment:classes-rebuild --create-classes --no-interaction');
+    run('{{bin/console}} opendxp:deployment:classes-rebuild --create-classes --force --no-interaction');
 });
 
 desc('Install Symfony bundle web assets');
